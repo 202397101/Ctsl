@@ -31,14 +31,14 @@ Access the MSigDB website and download the Gene Symbols GMT file for the C2: cur
 3. **For Figures 3K, 3L, 6C**  
 Download TCGA expression data using the TCGAbiolinks R library.  
 Use the functions `getGDCprojects` and `GDCquery` with the following parameters:
-```r
+
 GDCquery(project = id, 
          data.category = "Transcriptome Profiling", 
          data.type = "Gene Expression Quantification", 
          experimental.strategy = "RNA-Seq",
          workflow.type = "STAR - Counts")
 
-4. **For Figure 7**
+5. **For Figure 7**
 From the GTEx portal, navigate to the RNA-seq section and download the following files:
 
 RSEM_transcript_tpm.txt.gz
