@@ -38,7 +38,7 @@ GDCquery(project = id,
          experimental.strategy = "RNA-Seq",
          workflow.type = "STAR - Counts")
 
-5. **For Figure 7**
+4. **For Figure 7**
 From the GTEx portal, navigate to the RNA-seq section and download the following files:
 
 RSEM_transcript_tpm.txt.gz
