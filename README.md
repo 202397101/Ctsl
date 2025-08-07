@@ -1,4 +1,4 @@
-Cathepsin L as a dual-target to mitigate muscle wasting while enhancing anti-tumor efficacy of anti-PD-L1
+# Cathepsin L as a dual-target to mitigate muscle wasting while enhancing anti-tumor efficacy of anti-PD-L1
 
-Abstract
+**Abstract**
 Immune checkpoint inhibitors (ICIs) have revolutionized cancer therapy; however, their use is frequently associated with immune-related adverse events (irAEs). In this study, anti-PD-L1 therapy exacerbates muscle wasting in tumor-bearing male mice despite its anti-tumor efficacy, accompanied by an accumulation of CD8+ T cells in muscle. Single-cell RNA sequencing identifies these cells as tissue-resident memory-like CD49a+ CD8+ T cells. While CD8+ T cell depletion prevents muscle wasting, it compromises the anti-tumor efficacy of anti-PD-L1. To resolve this paradox, we identify cathepsin L (CTSL) as a dual-target capable of suppressing both tumor progression and CD8+ T cell-mediated muscle wasting, through integrative transcriptomic analysis. Pharmacological inhibition of CTSL not only mitigates anti-PD-L1-induced muscle wasting but also further suppresses tumor growth, potentially via downregulation of BNIP3. Here, we show that CTSL is a dual-action target to uncouple anti-tumor efficacy from muscle-specific irAEs, offering a strategy to improve clinical outcomes of ICIs.
