@@ -37,3 +37,11 @@ GDCquery(project = id,
          data.type = "Gene Expression Quantification", 
          experimental.strategy = "RNA-Seq",
          workflow.type = "STAR - Counts")
+
+4. **For Figure 7**
+From the GTEx portal, navigate to the RNA-seq section and download the following files:
+
+RSEM_transcript_tpm.txt.gz
+RSEM_transcript_expected_count.txt.gz
+
+🔗 [GTEx]([https://www.gsea-msigdb.org/gsea/msigdb/](https://gtexportal.org/home/downloads/adult-gtex/bulk_tissue_expression))
