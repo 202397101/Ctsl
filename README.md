@@ -28,18 +28,21 @@ To construct the protein-protein interaction (PPI) network, download the protein
 Access the MSigDB website and download the Gene Symbols GMT file for the C2: curated gene sets.  
 🔗 [MSigDB](https://www.gsea-msigdb.org/gsea/msigdb/)
 
-3. **For Figures 3K, 3L, 6C**  
+3. **For Figure 7**  
+From the GTEx portal, navigate to the RNA-seq section and download the following files:  
+RSEM_transcript_tpm.txt.gz  
+RSEM_transcript_expected_count.txt.gz  
+🔗 [GTEx](https://gtexportal.org/home/downloads/adult-gtex/bulk_tissue_expression)
+
+
+4. **For Figures 3K, 3L, 6C**  
 Download TCGA expression data using the TCGAbiolinks R library.  
 Use the functions `getGDCprojects` and `GDCquery` with the following parameters:
 
+'''R
 GDCquery(project = id, 
          data.category = "Transcriptome Profiling", 
          data.type = "Gene Expression Quantification", 
          experimental.strategy = "RNA-Seq",
          workflow.type = "STAR - Counts")
 
-4. **For Figure 7**
-From the GTEx portal, navigate to the RNA-seq section and download the following files:
-RSEM_transcript_tpm.txt.gz
-RSEM_transcript_expected_count.txt.gz
-🔗 [GTEx](https://gtexportal.org/home/downloads/adult-gtex/bulk_tissue_expression)
