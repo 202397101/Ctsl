@@ -28,8 +28,8 @@ rownames(muscle.rcm) = muscle.rcm$Name
 ginfo = muscle.rcm[,c(1:2)]
 muscle.rcm = muscle.rcm[,-c(1:2)]
 
-ann = read.table("E:/Dropbox/PNU/시스템생물학연구실/DB/GTEx/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt", header = T, row.names = 1, sep = "\t", quote = "\"", fill = T)
-tissue = tapply(rownames(ann), ann$SMTSD, FUN = function(i) i) #55 tissues 별로 id 분리.
+ann = read.table("yourPath/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt", header = T, row.names = 1, sep = "\t", quote = "\"", fill = T)
+tissue = tapply(rownames(ann), ann$SMTSD, FUN = function(i) i) 
 tissue = tissue$`Muscle - Skeletal`
 rcm = muscle.rcm[,colnames(muscle.rcm) %in% tissue]
 rcm = na.omit(rcm)
@@ -44,7 +44,7 @@ rownames(rcm) = new_rownames[!duplicated(new_rownames)]
 ctsl = as.numeric(rcm[match('CTSL', rownames(rcm)),])
 names(ctsl) = colnames(rcm[match('CTSL', rownames(rcm)),])
 ctsl = ctsl[order(ctsl)]
-q.ctsl = ceiling(quantile(1:length(ctsl), probs = c(0.5, 0.5))) # low, high 분류하기 위해 삼등분.
+q.ctsl = ceiling(quantile(1:length(ctsl), probs = c(0.5, 0.5))) 
 low.ctsl = ctsl[1:q.ctsl[1]] 
 high.ctsl = ctsl[q.ctsl[2]:length(ctsl)] 
 low.id.ctsl = names(low.ctsl) #402
@@ -98,15 +98,14 @@ deg = data.frame(Genes = rownames(dce), deg[match(rownames(dce), rownames(deg)),
 ###################################################################################
 
 # Ctsl - Bnip3 network
-ppi = read.csv(file = "E:/Dropbox/PNU/시스템생물학연구실/DB/string/mus_musculus/10090.protein.links.v12.0.txt", sep = " ", header = T, stringsAsFactors = F, quote = "")
-pinfo = read.csv(file = "E:/Dropbox/PNU/시스템생물학연구실/DB/string/mus_musculus/10090.protein.info.v12.0.txt", sep = "\t", header = T, stringsAsFactors = F, quote = "")
+ppi = read.csv(file = "yourPath/10090.protein.links.v12.0.txt", sep = " ", header = T, stringsAsFactors = F, quote = "")
+pinfo = read.csv(file = "yourPath/10090.protein.info.v12.0.txt", sep = "\t", header = T, stringsAsFactors = F, quote = "")
 ppi$protein1 = pinfo$preferred_name[match(ppi$protein1, pinfo$X.string_protein_id)]
 ppi$protein2 = pinfo$preferred_name[match(ppi$protein2, pinfo$X.string_protein_id)]
 ppi1 = ppi[ppi$combined_score>500 ,]
 cb.ppi = ppi1[ppi1$protein1 %in% c('Ctsl','Bnip3') | ppi1$protein2 %in% c('Ctsl','Bnip3'), 1:2]
 
 # IgG vs CON , aCD8 vs IgG (TA muscle)
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
 ta.deg = ta.degl$`IgG vs WT`
 ta.deg = ta.deg[!is.na(ta.deg$padj),]
 ta.deg = ta.deg[ta.deg$padj < 0.01,]
@@ -159,7 +158,7 @@ names(rk) = use$Genes
 rk = sort(rk, decreasing = T)
 
 
-gsl = gmtPathways("E:/Dropbox/PNU/시스템생물학연구실/DB/msigdb/c2.all.v2024.1.Hs.symbols.gmt")
+gsl = gmtPathways("yourPath/c2.all.v2024.1.Hs.symbols.gmt")
 gsea = as.data.frame(fgsea(pathways = gsl, stats = rk, minSize = 10, maxSize = 500, nperm=100000))
 gsea.df = gsea %>% filter(padj<=0.01) %>% arrange(desc(NES), desc(padj))
 gsea.df = gsea.df[grep('WP_',gsea.df$pathway),]
@@ -192,6 +191,7 @@ ggplot(gsea.df, aes(x = reorder(pathway, NES), y = NES)) +
   coord_flip()
 
 
+                
 #############################################
 # Figure 7C GTEx
 #############################################
@@ -206,23 +206,24 @@ names(rk) = use$Genes
 rk = sort(rk, decreasing = T)
 
 
-gsl = gmtPathways("E:/Dropbox/PNU/시스템생물학연구실/DB/msigdb/c2.all.v2024.1.Hs.symbols.gmt")
+gsl = gmtPathways("yourPath/c2.all.v2024.1.Hs.symbols.gmt")
 gset = gsl[grep('PROTEASOME', names(gsl))]
 gset = gset[15]
 names(gset)
-fname = sprintf("%s/0_reviewer/figure/3-8_metastasis.tif", dir)
+fname = "yourPath/GTEx_proteasome.tif"
 labs = list(mt="Proteasome degradation", redgroup.lab="CTSL-BNIP3 high", bluegroup.lab="CTSL-BNIP3 low", mlab="")
 length(rk)
 xmax = 21000
 hcol=c("blue", "white", "red")
 
-gsl = gmtPathways("E:/Dropbox/PNU/시스템생물학연구실/DB/msigdb/c2.all.v2024.1.Hs.symbols.gmt")
+gsl = gmtPathways("yourPath/c2.all.v2024.1.Hs.symbols.gmt")
 gset = gsl[grep('ELECTRON_TRANSPORT_CHAIN', names(gsl))]
-fname = sprintf("%s/0_reviewer/figure/3-8_metastasis.tif", dir)
+fname = "yourPath/GTEx_MT.tif"
 labs = list(mt="Electron Transport Chain Oxphos System In Mitochondria", redgroup.lab="CTSL-BNIP3 high", bluegroup.lab="CTSL-BNIP3 low", mlab="")
 length(rk)
 xmax = 21000
 hcol=c("blue", "white", "red")
+
 
 
 
