@@ -17,7 +17,7 @@ Here, we show that CTSL is a dual-action target to uncouple anti-tumor efficacy 
 *Summary of R Script Execution*  
 There are seven R scripts, each corresponding to a specific figure.  
 To run these scripts, you must first download the necessary R data (Rdata).  
-This data can be obtained from either a provided compressed file (.zip) or from the databases detailed below.  
+This data can be obtained from either a provided compressed file (Figure_Rdata.zip) or from the databases detailed below.  
 After downloading, appropriate data processing is required before executing each script.
 
 1. **For Figures 3B, 3E, 3F, 3G, 5E, 6A, 7A**  
