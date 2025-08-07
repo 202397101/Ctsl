@@ -20,11 +20,11 @@ To run these scripts, you must first download the necessary data sets.
 The data can be obtained from either a provided compressed file (Figure_Rdata.zip) or from the databases detailed below.
 After downloading, appropriate data processing is required before executing each script.
 
-1. **For Figures 3B, 3E, 3F, 3G, 5E, 6A, 7A**  
+1. **For Figure 3B, 3E, 3F, 3G, 5E, 6A, 7A**  
 To construct the protein-protein interaction (PPI) network, download the protein.links (interaction data) and protein.info (accessory data) files for *Mus musculus* from the STRING database.  
 🔗 [STRING database](https://string-db.org/cgi/download?sessionId=bJCyoNzXhR2Z)
 
-2. **For Figures 7B, 7C**  
+2. **For Figure 7B, 7C**  
 Access the MSigDB website and download the Gene Symbols GMT file for the C2: curated gene sets.  
 🔗 [MSigDB](https://www.gsea-msigdb.org/gsea/msigdb/)
 
@@ -34,10 +34,10 @@ RSEM_transcript_tpm.txt.gz
 RSEM_transcript_expected_count.txt.gz  
 🔗 [GTEx](https://gtexportal.org/home/downloads/adult-gtex/bulk_tissue_expression)
 
-4. **For Figures 6D, 7C**  
+4. **For Figure 6D, 7C**  
 gseaPlot is the code used to generate GSEA plots shown in Figures 6D and 7C.
 
-5. **For Figures 3K, 3L, 6C**  
+5. **For Figure 3K, 3L, 6C**  
 Download TCGA expression data using the TCGAbiolinks R library.  
 Use the functions `getGDCprojects` and `GDCquery` with the following parameters:
 
