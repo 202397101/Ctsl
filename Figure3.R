@@ -80,8 +80,8 @@ library(GOfuncR)
 library(ggvenn)
 
 
-ppi = read.csv(file = "C:/Dropbox/PNU/시스템생물학연구실/data/gluconeogenesis/bulkRNA/string/10090.protein.links.v12.0.txt", sep = " ", header = T, stringsAsFactors = F, quote = "")
-pinfo = read.csv(file = "C:/Dropbox/PNU/시스템생물학연구실/data/gluconeogenesis/bulkRNA/string/10090.protein.info.v12.0.txt", sep = "\t", header = T, stringsAsFactors = F, quote = "")
+ppi = read.csv(file = "yourPath/10090.protein.links.v12.0.txt", sep = " ", header = T, stringsAsFactors = F, quote = "")
+pinfo = read.csv(file = "yourPath/10090.protein.info.v12.0.txt", sep = "\t", header = T, stringsAsFactors = F, quote = "")
 ppi$protein1 = pinfo$preferred_name[match(ppi$protein1, pinfo$X.string_protein_id)]
 ppi$protein2 = pinfo$preferred_name[match(ppi$protein2, pinfo$X.string_protein_id)]
 ppi1 = ppi[ppi$combined_score>400 & ppi$protein1 %in% total.inter & ppi$protein2 %in% total.inter, 1:2]
@@ -149,11 +149,11 @@ library(colorRamp2)
 mod2 = c('Ctsl', 'Bnip3', 'Fkbp5', 'Hif3a', 'Egln3', 'Psmd8', 'Tnfrsf12a', 'Psma7')
 
 rownames(annot) = annot$ID
-muscle.annot = annot[annot$Cell_type == "muscle" & !annot$Case == "Fasted",] #muscle인 것만 골라오기.
+muscle.annot = annot[annot$Cell_type == "muscle" & !annot$Case == "Fasted",] 
 ml = sml[match(muscle.annot$ID, names(sml))] #muscle인 geo만 가져오기.
 
 resl = lapply(ml, function(m){
-  mm = m[match(mod2, m$Symbol),] #원하는 유전자만 가져오기.
+  mm = m[match(mod2, m$Symbol),] 
   list(logFC = mm[,colnames(mm) %in% c("log2FoldChange","logFC")], Qval = mm[,colnames(mm) %in% c("adj.P.Val","padj")])
 })
 
@@ -389,7 +389,7 @@ for(i in 1:length(tcga.tpm)){
   
   s.plot = sp$plot #+ annotate("text", x = max(fit$time)-1000, y = 0.8, label = paste0("HR=", hr), size = 5, color = "black")
   
-  ggsave(file = paste0(dir, "/figure_revision/Figure3K.tiff"), plot = s.plot, width = 12, height = 10, units = 'cm', dpi = 300)
+  ggsave(file = "yourPath/Figure3K.tiff", plot = s.plot, width = 12, height = 10, units = 'cm', dpi = 300)
 }
 
 
@@ -425,9 +425,6 @@ abline(lm(pdl1 ~ ctsl), col = "red", lwd=2, lty = 3)
 ###############################
 # Figure 3M
 ###############################
-dir = "C:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/5-5-3_human-reference.Rdata", dir)) # ginfo
 
 library(biomaRt)
 library(rtracklayer)
@@ -457,7 +454,7 @@ eset = exprs(gse)
 pset = phenoData(gse)
 pset.df = pset@data
 
-tpm = read.csv(sprintf("%s/0_reviewer/GEO/GSE283829_raw_express_matrix_all_samples.txt",dir), header=T, sep="\t", row.names = 1)
+tpm = read.csv("yourPath/Figure3M.txt", header=T, sep="\t", row.names = 1)
 colnames(tpm) = gsub("S","",colnames(tpm))
 colnames(tpm) = pset.df$geo_accession[match(colnames(tpm), pset.df$title)]
 
@@ -514,4 +511,5 @@ for (j in 1:length(unique(ctsl$sample))) {
   mycol = ifelse(unique(ctsl$sample) == "1", "dodgerblue", "mediumvioletred")
   stripchart(ctsl[,1][ctsl$sample == unique(ctsl$sample)[j]] ~ ctsl$sample[ctsl$sample == unique(ctsl$sample)[j]], method = "jitter", jitter = 0.23, vertical = T,  pch = 19, lwd = 1, cex = 0.5, col = mycol[j], at=j, add = T, bg = "black")
 }
+
 
