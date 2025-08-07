@@ -87,20 +87,6 @@ ggplot() +
     axis.line = element_line(color = "black", size = 0.2))
 dev.off()
 
-# pvalue
-tm %>%
-  group_by(Day, response) %>%
-  filter(n() >= 3) %>%   
-  shapiro_test(delta) %>%
-  ungroup()
-
-tm %>%
-  group_by(Day) %>%
-  pairwise_t_test(
-    delta ~ response, alternative = "less",
-    p.adjust.method = "BH") %>%
-  ungroup()
-
 
 # tumor free body weight
 baseline_by_group = ici %>%
@@ -154,25 +140,6 @@ ggplot() +
 
 dev.off()
 
-# pvalue
-bw %>%
-  group_by(Day, response) %>%
-  filter(n() >= 3) %>%   
-  shapiro_test(delta) %>%
-  ungroup()
-
-bw %>%
-  group_by(Day) %>%
-  pairwise_t_test(
-    delta ~ response, alternative = "less",
-    p.adjust.method = "BH") %>%
-  ungroup()
-
-
-# for resource
-write_xlsx(tm, path = sprintf("%s/excel/Fig1A-1.xlsx", dir))
-write_xlsx(bw, path = sprintf("%s/excel/Fig1A-2.xlsx", dir))
-
 
 
 ############################
@@ -212,14 +179,6 @@ autoplot(pca, data = xx1, colour = 'samples', frame = T, label = F, label.size =
   theme_bw()+
   theme(legend.position = "none", axis.text.x = element_text(size = 12), axis.text.y = element_text(size = 12))
 dev.off()
-
-
-# for source data
-df = summary(pca)
-df = as.data.frame(df$importance)
-
-write_xlsx(df, path = sprintf("%s/excel/Fig1J.xlsx", dir))
-
 
 
 ############################
@@ -286,19 +245,6 @@ bp = barplot(tail(downgo$logFDR, 5), xlim = c(0, 24), horiz = T, xaxt = 'n', yax
 abline(v=0, lty=1)
 text(x=0.2, y=bp ,labels = tail(downgo$Description, 5), col = "black", xpd=T, cex=1.2, adj=0)
 
-
-# for source data
-upgo.1k = upgo[,c(1:7)]
-downgo.1k = downgo[,c(1:7)]
-
-write_xlsx(upgo.1k, path = sprintf("%s/excel/Fig1K_UP.xlsx", dir))
-write_xlsx(downgo.1k, path = sprintf("%s/excel/Fig1K_DOWN.xlsx", dir))
-
-igg.up = up.ora
-igg.upgo = upgo
-igg.down = down.ora
-igg.downgo = downgo
-#save(igg.up, igg.upgo, igg.down, igg.downgo, file = sprintf("%s/Rdata/Figure1K.Rdata", dir))
 
 
 ############################
@@ -367,21 +313,6 @@ bp = barplot(tail(down.ora.df$logFDR, 5), xlim = c(0,5), horiz = T, xaxt = 'n', 
              width = 0.7, border = NA, col = "cornflowerblue", main = " ", cex.main = 1.5, add = T)
 abline(v=0, lty=1)
 text(x=0.1, y=bp ,labels = tail(down.ora.df$Description, 5), col = "black", xpd=T, cex=1.2, adj=0)
-
-# for source data
-upgo.1l = up.ora.df[,c(1:7)]
-downgo.1l = down.ora.df[,c(1:7)]
-
-write_xlsx(upgo.1l, path = sprintf("%s/excel/Fig1L_UP.xlsx", dir))
-write_xlsx(downgo.1l, path = sprintf("%s/excel/Fig1L_DOWN.xlsx", dir))
-
-
-pdl1.up = up.ora
-pdl1.upgo = up.ora.df
-pdl1.down = down.ora
-pdl1.downgo = down.ora.df
-#save(pdl1.up, pdl1.upgo, pdl1.down, pdl1.downgo, file = sprintf("%s/Rdata/Figure1L.Rdata", dir))
-
 
 
 ############################
@@ -456,17 +387,5 @@ bp = barplot(tail(down.top10$logFDR, 5), xlim = c(0,30), horiz = T, xaxt = 'n', 
 abline(v=0, lty=1)
 text(x=0.1, y=bp ,labels = tail(down.top10$Description, 5), col = "black", xpd=T, cex=1.2, adj=0)
 
-# for source data
-upgo.1m = up.ora.df[,c(1:7)]
-downgo.1m = down.ora.df[,c(1:7)]
-
-write_xlsx(upgo.1m, path = sprintf("%s/excel/Fig1M_UP.xlsx", dir))
-write_xlsx(downgo.1m, path = sprintf("%s/excel/Fig1M_DOWN.xlsx", dir))
-
-cd8.up = up.ora
-cd8.upgo = up.ora.df
-cd8.down = down.ora    
-cd8.downgo = down.ora.df
-#save(cd8.up, cd8.upgo, cd8.down, cd8.downgo, file = sprintf("%s/Rdata/Figure1M.Rdata", dir))
 
 
