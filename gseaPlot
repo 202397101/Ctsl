@@ -1,0 +1,65 @@
+library(fgsea)
+gseaPlot=function(fname, rk, gset ,labs, xmax, hcol=c("blue", "white", "red")){
+	mt=labs$mt
+	redgroup.lab=labs$redgroup.lab
+	bluegroup.lab=labs$bluegroup.lab
+	class.name=labs$mlab
+	a = plotEnrichment(gset[[1]],rk)
+	fres=a$data
+	colnames(fres)=c("x","y")
+	es.range <- c(min(fres$y), max(fres$y))
+	gsea.rnk = data.frame(names(rk),rk)
+	colnames(gsea.rnk) = c("id", "metric")
+	gsea.rnk=gsea.rnk[order(- gsea.rnk$metric),]
+	metric.range = c(min(gsea.rnk$metric), max(gsea.rnk$metric))
+	ss=fgsea(pathways = gset, stats = rk,nperm=10000,nproc=0,BPPARAM = SerialParam())
+	nes=round(ss$NES,digits=2)
+	pv=round(ss$pval,digits=2)
+	tiff(filename=fname, width=8, height =7, units = 'cm',res=300,type="cairo")
+	#win.metafile(filename=fname, width=6/cm(1), height =5.5/cm(1))
+	
+	gsea.layout= layout(matrix(c(1, 2, 3)), heights = c(1.5,0.2,0.6))
+	#layout.show(gsea.layout)
+	par(mar = c(0,3.5,0.1,0.8))
+	ln1=round(seq(es.range[1], es.range[2], 0.1), digits = 1)
+	plot(fres$x,fres$y, type = "l", col = "green", lwd = 2.5, xaxt = "n", xlab = "", ylab = ""
+		, xaxs = "i", yaxt = "n", yaxs = "i", main = "", xpd=T
+		, ylim = c(es.range[1]-0.05,es.range[2]+0.05), xlim=c(0,xmax)
+		, panel.first = { abline(h = ln1 , col = "gray95", lty = 2)
+	    abline(h = 0, col = "black", lty = 2)
+	    abline(h = es.range[ifelse(nes<0,1,2)], col = "red", lty = 2)} )
+	ln2=round( seq(es.range[1], es.range[2]+0.05, 0.2), digits = 1)
+	axis(2,at = ln2,labels=rep("",length(ln2)), cex.axis=1, pos=0,tck=-0.03)
+	axis(2,at = ln2,labels=ln2, las=2, cex.axis=1, pos=-length(gsea.rnk$metric)*0.0001, tick=FALSE)
+	axis(2,at = es.range[1]+(es.range[2]-es.range[1])/2, labels ="Enrichment score" ,tick=FALSE, cex.axis=1.2 ,pos=-length(gsea.rnk$metric)*0.068)
+	mtext(mt,line=0.2, cex=0.8)
+	plot.coordinates <- par("usr")
+	text(length(gsea.rnk$metric)*0.99, plot.coordinates[4] - ((plot.coordinates[4] - plot.coordinates[3]) * 0.15)
+		, paste("p-value:", pv,"\nNES:", nes), adj = c(1,1), cex=1)
+	par(mar = c(0,3.5, 0.1,0.8))
+	plot(0, type = "n", xaxt = "n", xaxs = "i", xlab = "", yaxt = "n", ylab = "", xlim = c(1, xmax))
+	abline(v =fres$x, lwd = 0.8)
+	mx=min(abs(quantile(gsea.rnk$metric,c(0.01,0.99))))
+	metric.range = c(-mx, mx)
+	rank.colors = gsea.rnk$metric
+	rank.colors[rank.colors>=mx] = mx
+	rank.colors[rank.colors<= -mx]= -mx
+	rank.colors = (rank.colors - metric.range[1])/ (metric.range[2] - metric.range[1])
+	rank.colors = ceiling(rank.colors * 255 + 1)
+	rank.colors = colorRampPalette(hcol)(256)[rank.colors]
+	rank.colors = rle(rank.colors)
+	
+	par(mar = c(3,3.5, 0.5,0.8)) 
+	bp=barplot(matrix(rank.colors$lengths), col = rank.colors$values, border = NA, horiz = TRUE, xaxt = "n"
+		, xlim = c(0, xmax), width = 0.2)
+	box()
+	text(length(gsea.rnk$metric)/2, 0.1, labels = ifelse(!missing(class.name), class.name, ""), cex=1)
+	text(length(gsea.rnk$metric)*0.03, 0.1, redgroup.lab, adj = c(0, NA), cex=1.5)
+	text(length(gsea.rnk$metric)*0.97, 0.1, bluegroup.lab, adj = c(1, NA),cex=1.5)
+	#ln3=c(seq(0,xmax, ifelse(xmax>15000,5000,5000))) 
+	ln3=seq(0,length(rk),5000)
+	axis(1,at = ln3 ,labels= rep("",length(ln3)), cex.axis=0.7, pos=-0.05,tck=-0.08,xpd=T) 
+	axis(1,at = ln3, labels=ln3, cex.axis=1, pos=0.05, tick=FALSE, xpd=T )
+	axis(1,at = xmax/2 ,labels=  "Gene rank", pos=-0.05,tick=FALSE, cex.axis=1) 
+	dev.off()
+}
