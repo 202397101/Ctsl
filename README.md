@@ -39,7 +39,7 @@ RSEM_transcript_expected_count.txt.gz
 Download TCGA expression data using the TCGAbiolinks R library.  
 Use the functions `getGDCprojects` and `GDCquery` with the following parameters:
 
-'''R
+''' R
 GDCquery(project = id, 
          data.category = "Transcriptome Profiling", 
          data.type = "Gene Expression Quantification", 
