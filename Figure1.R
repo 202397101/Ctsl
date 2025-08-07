@@ -465,7 +465,8 @@ write_xlsx(downgo.1m, path = sprintf("%s/excel/Fig1M_DOWN.xlsx", dir))
 
 cd8.up = up.ora
 cd8.upgo = up.ora.df
-cd8.down = down.ora
+cd8.down = down.ora    
 cd8.downgo = down.ora.df
 #save(cd8.up, cd8.upgo, cd8.down, cd8.downgo, file = sprintf("%s/Rdata/Figure1M.Rdata", dir))
+
 
