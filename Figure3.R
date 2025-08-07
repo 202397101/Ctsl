@@ -1,10 +1,6 @@
 ####################
 # Figure 3A
 ####################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
-load(file = sprintf("%s/Rdata/Figure6_EFG_Ctsl-network.Rdata", dir)) # ppi1, ctsl.graph
 
 library(igraph)
 library(RCy3)
@@ -44,11 +40,11 @@ ga.ta.interli = list(TA_IgG=ta.updeg$Genes, 'TA_anti-CD8'=cd8.downdeg$Genes, GA=
 lung.ta.interli = list(TA_IgG=ta.updeg$Genes, 'TA_anti-CD8'=cd8.downdeg$Genes, Lung=lung.updeg$Genes)
 inter.li =  list(GA=ga.updeg$Genes, TA_IgG=ta.updeg$Genes, Lung=lung.updeg$Genes, 'TA_anti-CD8'=cd8.downdeg$Genes)
 
-tiff(filename = sprintf("%s/figure_revision/Figure3A.tiff", dir), width = 10, height = 10, units = 'cm', res = 300)
+
 ggvenn(inter.li, show_percentage = F, 
        fill_color = c("mediumturquoise","purple","lightgoldenrod1","dodgerblue"), fill_alpha = 0.6, stroke_color = "black", 
        stroke_size = 0.3, set_name_size = 0, text_color = "black", text_size = 7) 
-dev.off()
+
 
 total.ora = as.data.frame(enrichGO(gene = total.inter, OrgDb = org.Mm.eg.db, keyType = "SYMBOL", ont = "BP", pvalueCutoff = 1, pAdjustMethod = "fdr", qvalueCutoff = 1, minGSSize = 10, maxGSSize = 500, readable = T))
 
@@ -70,10 +66,6 @@ text(x=0.05, y=bp ,labels = tail(inter.top5$Description), col = "black", xpd=T, 
 ####################
 # Figure 3B
 ####################
-dir = "C:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
-load(file = sprintf("%s/Rdata/Figure6_EFG_Ctsl-network.Rdata", dir)) # ppi1, ctsl.graph
 
 library(igraph)
 library(RCy3)
@@ -148,9 +140,6 @@ text(x=0.05, y=bp ,labels = tail(mo1$Description), col = "black", xpd=T, cex=1.5
 ####################
 # Figure 3C
 ####################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/받은자료/GEO/GEO_mm_DEG.Rdata", dir)) #annot, eml, iml, sml (mouse GEO 정리한것)
 
 library(pheatmap)
 library(biomaRt)
@@ -204,38 +193,14 @@ hm = Heatmap(t(logfc1.sort), show_heatmap_legend = F, heatmap_legend_param = lis
              cell_fun = function(j, i, x, y, width, height, fill) {grid.text(hm.val.sort[j, i], x, y, gp = gpar(fontsize=10, col="black"))},
              rect_gp = gpar(col = "white", lwd = 1), 
              top_annotation = ha)
-tiff(filename = sprintf("%s/figure/Figure3C.tif", dir), width = 25, height = 8, units = 'cm', res = 300)
+
 draw(hm, annotation_legend_list=packLegend(list=list(lg.ht)), merge_legend=T, heatmap_legend_side="left", annotation_legend_side='right', padding=unit(c(1,0,0,0), "cm"))
-dev.off()
 
-# for source data
-write.xlsx(logfc1, file = sprintf("%s/excel/Fig4C.xlsx", dir), rowNames=T)
-
-
-####################################
-# Figure 3E,F,G,H,I,J
-####################################
-dir = "C:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/6-5_DEG.Rdata", dir)) #rcm, tpm, ginfo, sinfo, degl
-load(file = sprintf("%s/Rdata/Figure6_EFG_Ctsl-network.Rdata", dir)) # ppi1, ctsl.graph
-load(file = sprintf("%s/Rdata/2-4_DEG.Rdata", dir)) # (GA, Lung) rcm, tpm, ginfo, sinfo, ddfl
-
-library(igraph)
-library(RCy3)
-library(ggplot2)
-library(gridExtra)
-library(clusterProfiler)
-library(org.Mm.eg.db)
-library(gridExtra)
-library(stringr)
-library(GOfuncR)
+           
 
 ############
 # Figure3E,H
 ############
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
 
 library(igraph)
 library(RCy3)
@@ -367,10 +332,6 @@ text(x=0.05, y=bp ,labels = CD8.ctsl.deg.kegg$Description, col = "black", xpd=T,
 ###############################
 # Figure 3K
 ###############################
-dir = "C:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-dir_TCGA = "C:/Dropbox/PNU/시스템생물학연구실/DB/TCGA"
-
-load(file = sprintf("%s/Rdata/TCGA_tpml_pan-cancer_v39.Rdata", dir_TCGA)) # tpml, clinical.sinfo
 
 library(TCGAbiolinks)
 library(SummarizedExperiment)
@@ -436,10 +397,6 @@ for(i in 1:length(tcga.tpm)){
 ###############################
 # Figure 3L
 ###############################
-dir = "C:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-dir_TCGA = "C:/Dropbox/PNU/시스템생물학연구실/DB/TCGA"
-
-load(file = sprintf("%s/Rdata/TCGA_tpml_pan-cancer_v39.Rdata", dir_TCGA)) # tpml, clinical.sinfo
 
 library(TCGAbiolinks)
 library(SummarizedExperiment)
@@ -459,21 +416,9 @@ pdl1= tumor.tpm[match('CD274', rownames(tumor.tpm)),]
 
 cor = cor.test(x = ctsl, y = pdl1, method = "pearson")
 
-tiff(filename = sprintf("%s/figure_revision/Figure3I.tiff", dir), width = 8, height = 8, units = 'cm', res = 300)
 par(mar=c(1.5,2,2,1), mgp = c(0,0.5,0))
 plot(pdl1 ~ ctsl, xlab = "", ylab = "", pch=19, cex = 0.6, col = "plum", main = "", cex.main = 1.5, cex.axis=0.8, cex.lab=0.2)
 abline(lm(pdl1 ~ ctsl), col = "red", lwd=2, lty = 3)
-#x.pos = par("usr")[1] + diff(par("usr")[1:2])*0.9
-#y.pos = par("usr")[4] - diff(par("usr")[3:4])*0.1
-#text(x.pos, y.pos, paste0("p=", ifelse(cor$p.value<=1e-6, "1e-6", round(cor$p.value, 5))), cex=1.2, col = "black")
-#x.pos1 = par("usr")[1] + diff(par("usr")[1:2])*0.9
-#y.pos1 = par("usr")[4] - diff(par("usr")[3:4])*0.2
-#text(x.pos1, y.pos1, paste0("r =", round(cor$estimate, 3)), cex=1.2, col = "black")  
-dev.off()
-
-# for source data
-cor.df = data.frame(CTSL = ctsl, 'PD-L1' = pdl1)
-write.xlsx(cor.df, file = sprintf("%s/excel/Fig3L.xlsx", dir), rowNames=T)
 
 
 
@@ -526,28 +471,18 @@ colnames(ctsl) = c("CTSL", "PD-L1")
 ctsl$sample = ifelse(rownames(ctsl) %in% CompleteResponse$geo_accession, '1_CR', 
                      ifelse(rownames(ctsl) %in% StableDisease$geo_accession, '2_SD', 
                             ifelse(rownames(ctsl) %in% ProgressiveDisease$geo_accession, '3_PD', '-')))
-#ctsl = ctsl[!grepl('1_CR', ctsl$sample),]
 
 corrt = cor.test(x = ctsl[[1]], y = ctsl[[2]], method = "pearson")
 
-tiff(filename = paste0(dir, "/figure_revision/Figure3J.tiff"), width = 9, height = 9, units = 'cm', res = 300)
 par(mar=c(3,3,2,1), mgp = c(2.5,1,0))
 plot(ctsl[[2]] ~ ctsl[[1]], xlab = "", ylab = "", pch=16, cex = 1.5, col = "indianred1", main = "", cex.axis=1, ylim=c(5,12), xlim=c(3,10))
 abline(lm(ctsl[[2]] ~ ctsl[[1]]), col = "black", lwd=2, lty = 3)
-dev.off()
-
-
-# for source data
-cor.df = data.frame(CTSL = ctsl[[1]], 'PD-L1' = ctsl[[2]], sample = ctsl$sample)
-write.xlsx(cor.df, file = sprintf("%s/excel/Fig3M.xlsx", dir), rowNames=T)
 
 
 
 ###############################
 # Figure 3N
 ###############################
-######## ArrayExpress_E-MATAB-12781 
-dir = "C:/Dropbox/PNU/시스템생물학연구실/data/cachexia/"
 
 library(biomaRt)
 library(rtracklayer)
@@ -563,10 +498,7 @@ library(gridExtra)
 library(ComplexHeatmap)
 library(circlize)
 
-load(file = sprintf("%s/Rdata/5-5-3_human-reference.Rdata", dir)) # ginfo
-load(file = sprintf("%s/Rdata/5-5-3_RCM_TPM.Rdata", dir)) # rcm, tpm, sinfo
-load(file = sprintf("%s/Rdata/5-5-3_DEG.Rdata", dir)) # ddf
-
+                      
 ddf[grep('CTSL', ddf$Genes),]
 tpm[grep('CTSL', rownames(tpm)),]
 ctsl = data.frame(log2(tpm[grep('CTSL', rownames(tpm)),]+1))
@@ -574,7 +506,7 @@ colnames(ctsl) = 'CTSL'
 ctsl$sample = '1'
 ctsl$sample[grep('Cachexia_', rownames(ctsl))] = '2'
 
-tiff(filename = sprintf("%s/figure_revision/Figure3H.tif", dir), width = 3, height = 3.5, units = 'cm', res = 300)
+
 par(mfrow=c(1,1), mar=c(0.2,1.5,1,1),  mgp=c(0,0.2,0), cex.axis=0.5, cex.lab=0.5, cex.main=0.5, tck=-0.02, las=1, bty="l")
 boxplot(ctsl[,1] ~ ctsl$sample, data = ctsl, col = "white", xlab = "", ylab = "", ylim = c(4, 5), lwd = 1.0, cex.main = 0.9, boxwex = 0.8, xaxt = "n", horizontal = F, outline = F)
 grid(nx = NA, ny = NULL, lty = 3, lwd = 0.8)
@@ -582,40 +514,4 @@ for (j in 1:length(unique(ctsl$sample))) {
   mycol = ifelse(unique(ctsl$sample) == "1", "dodgerblue", "mediumvioletred")
   stripchart(ctsl[,1][ctsl$sample == unique(ctsl$sample)[j]] ~ ctsl$sample[ctsl$sample == unique(ctsl$sample)[j]], method = "jitter", jitter = 0.23, vertical = T,  pch = 19, lwd = 1, cex = 0.5, col = mycol[j], at=j, add = T, bg = "black")
 }
-dev.off()
 
-# p-value
-con = ctsl[1:4,1]
-cac = ctsl[5:9,1]
-shapiro.test(con) #p-value>=0.05 대립가설 기각, 정규분포 따름->t.test
-shapiro.test(cac) #p-value>=0.05 대립가설 기각, 정규분포 따름->t.test
-var.test(con, cac) #p-value>=0.05 -> 두 그룹의 분산이 같다.
-gt = t.test(con, cac, var.equal = T, alternative = 'less') 
-gt$stderr
-
-# for source data
-write.xlsx(ctsl, file = sprintf("%s/excel/Fig3N.xlsx", dir), rowNames=T)
-
-# for check
-ctsl %>%
-  group_by(sample) %>%
-  summarise(
-    Min = min(CTSL),
-    Q1 = quantile(CTSL, 0.25),
-    Median = median(CTSL),
-    Q3 = quantile(CTSL, 0.75),
-    Max = max(CTSL),
-    IQR = IQR(CTSL),
-    Lower_Whisker = max(min(CTSL), Q1 - 1.5 * IQR),
-    Upper_Whisker = min(max(CTSL), Q3 + 1.5 * IQR)
-  )
-
-ctsl$sample = factor(ctsl$sample, levels = c("1", "2"),
-                     labels = c("Healthy", "Cachexia"))
-ctsl %>%
-  group_by(sample) %>%
-  summarise(
-    Mean = mean(CTSL),
-    SD = sd(CTSL),
-    n = n(),
-    SEM = SD / sqrt(n))
