@@ -35,7 +35,7 @@ RSEM_transcript_expected_count.txt.gz
 🔗 [GTEx](https://gtexportal.org/home/downloads/adult-gtex/bulk_tissue_expression)
 
 4. **For Figure 6D, 7C**  
-gseaPlot is the code used to generate GSEA plots shown in Figures 6D and 7C.
+gseaPlot is the code used to generate GSEA plots.
 
 5. **For Figure 3K, 3L, 6C**  
 Download TCGA expression data using the TCGAbiolinks R library.  
