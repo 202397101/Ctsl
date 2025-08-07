@@ -1,22 +1,6 @@
 ############################
 # Figure 1A
 ############################
-dir = "C:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-library(readxl)
-library(ggplot2)
-library(purrr)
-library(lubridate)
-#BiocManager::install('ggpubr')
-library(ggpubr)
-library(tidyr)
-library(broom)
-library(ggrepel)
-#install.packages('ggbreak')
-library(ggbreak)
-library(dplyr)
-library(writexl)
-
 
 ici = as.data.frame(read_excel(path = sprintf("%s/0_reviewer/ICI-weight/PMID39681653.xlsx", dir), col_names = T))
 ici = ici[,c(1,2,3,4,6,10,11,12)]
@@ -66,7 +50,7 @@ tm_pct = tm_pct %>%
   mutate(Day_f = factor(Day, levels = c(13), labels = c("Day 13")))
 
 
-tiff(filename=sprintf("%s/figure_revision/Figure1A_tumor.tiff", dir), width=4, height=5, units = 'cm',res=300)
+
 ggplot() +
   stat_summary(data = tm, aes(x = Day_f, y = delta, fill = response), fun = median, geom = "col",
                position = position_dodge2(width = 0.4, padding = 0.4), width = 0.4, alpha = 0.8) +
@@ -85,21 +69,6 @@ ggplot() +
     legend.position = "none",
     panel.grid = element_blank(),
     axis.line = element_line(color = "black", size = 0.2))
-dev.off()
-
-# pvalue
-tm %>%
-  group_by(Day, response) %>%
-  filter(n() >= 3) %>%   
-  shapiro_test(delta) %>%
-  ungroup()
-
-tm %>%
-  group_by(Day) %>%
-  pairwise_t_test(
-    delta ~ response, alternative = "less",
-    p.adjust.method = "BH") %>%
-  ungroup()
 
 
 # tumor free body weight
@@ -114,12 +83,6 @@ bw = ici %>%
   mutate( delta = (TumorFreeWeight - baseline) / baseline * 100) %>%
   select(-baseline)
 
-#bw = ici %>%
-  filter(Day %in% c(13)) %>%         
-  left_join(baseline_by_group, by = "response") %>%
-  mutate( delta = (TumorFreeWeight - baseline) / baseline * 100) %>%
-  dplyr::select(-baseline)
-
 bw_pct = bw %>%
   group_by(response, Day) %>%
   summarise(n = n(),
@@ -132,7 +95,6 @@ bw_pct = bw_pct %>%
   mutate(Day_f = factor(Day, levels = c(13), labels = c("Day 13")))
 
 
-tiff(filename=sprintf("%s/figure_revision/Figure1A_weight.tiff", dir), width=4, height=5, units = 'cm',res=300)
 ggplot() +
   stat_summary(data = bw, aes(x = Day_f, y = delta, fill = response), fun = median, geom = "col",
                position = position_dodge2(width = 0.4, padding = 0.4), width = 0.4, alpha = 0.8) +
@@ -152,35 +114,11 @@ ggplot() +
     panel.grid = element_blank(),
     axis.line = element_line(color = "black",size = 0.2))
 
-dev.off()
-
-# pvalue
-bw %>%
-  group_by(Day, response) %>%
-  filter(n() >= 3) %>%   
-  shapiro_test(delta) %>%
-  ungroup()
-
-bw %>%
-  group_by(Day) %>%
-  pairwise_t_test(
-    delta ~ response, alternative = "less",
-    p.adjust.method = "BH") %>%
-  ungroup()
-
-
-# for resource
-write_xlsx(tm, path = sprintf("%s/excel/Fig1A-1.xlsx", dir))
-write_xlsx(bw, path = sprintf("%s/excel/Fig1A-2.xlsx", dir))
-
 
 
 ############################
 # Figure 1J
 ############################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
 
 library(ggplot2)
 library(cluster)
@@ -204,30 +142,18 @@ summary(pca)
 xx1 = as.data.frame(xx)
 xx1$samples = rep(c("Con", "Anti-CD8", "IgG", "Anti-PD-L1"), c(5,3,4,3))
 
-tiff(filename=sprintf("%s/figure_revision/Figure1J.tiff", dir), width=10, height=10, units = 'cm',res=300)
 autoplot(pca, data = xx1, colour = 'samples', frame = T, label = F, label.size = 3) + 
   ggtitle(paste0("PCA ", nrow(m)," genes"))+
   scale_color_manual(values = c("Con" = "black", "Anti-CD8" = "purple", "IgG" = "red2", "Anti-PD-L1" = "blue1"))+
   scale_fill_manual(values = c("Con" = "white", "Anti-CD8" = "white", "IgG" = "white", "Anti-PD-L1" = "white"))+
   theme_bw()+
   theme(legend.position = "none", axis.text.x = element_text(size = 12), axis.text.y = element_text(size = 12))
-dev.off()
-
-
-# for source data
-df = summary(pca)
-df = as.data.frame(df$importance)
-
-write_xlsx(df, path = sprintf("%s/excel/Fig1J.xlsx", dir))
 
 
 
 ############################
 # Figure 1K
 ############################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
 
 library(ggplot2)
 library(gridExtra)
@@ -287,26 +213,10 @@ abline(v=0, lty=1)
 text(x=0.2, y=bp ,labels = tail(downgo$Description, 5), col = "black", xpd=T, cex=1.2, adj=0)
 
 
-# for source data
-upgo.1k = upgo[,c(1:7)]
-downgo.1k = downgo[,c(1:7)]
-
-write_xlsx(upgo.1k, path = sprintf("%s/excel/Fig1K_UP.xlsx", dir))
-write_xlsx(downgo.1k, path = sprintf("%s/excel/Fig1K_DOWN.xlsx", dir))
-
-igg.up = up.ora
-igg.upgo = upgo
-igg.down = down.ora
-igg.downgo = downgo
-#save(igg.up, igg.upgo, igg.down, igg.downgo, file = sprintf("%s/Rdata/Figure1K.Rdata", dir))
-
 
 ############################
 # Figure 1L
 ############################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
 
 library(igraph)
 library(RCy3)
@@ -368,28 +278,11 @@ bp = barplot(tail(down.ora.df$logFDR, 5), xlim = c(0,5), horiz = T, xaxt = 'n', 
 abline(v=0, lty=1)
 text(x=0.1, y=bp ,labels = tail(down.ora.df$Description, 5), col = "black", xpd=T, cex=1.2, adj=0)
 
-# for source data
-upgo.1l = up.ora.df[,c(1:7)]
-downgo.1l = down.ora.df[,c(1:7)]
-
-write_xlsx(upgo.1l, path = sprintf("%s/excel/Fig1L_UP.xlsx", dir))
-write_xlsx(downgo.1l, path = sprintf("%s/excel/Fig1L_DOWN.xlsx", dir))
-
-
-pdl1.up = up.ora
-pdl1.upgo = up.ora.df
-pdl1.down = down.ora
-pdl1.downgo = down.ora.df
-#save(pdl1.up, pdl1.upgo, pdl1.down, pdl1.downgo, file = sprintf("%s/Rdata/Figure1L.Rdata", dir))
-
 
 
 ############################
 # Figure 1M
 ############################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
 
 library(igraph)
 library(RCy3)
@@ -456,16 +349,6 @@ bp = barplot(tail(down.top10$logFDR, 5), xlim = c(0,30), horiz = T, xaxt = 'n', 
 abline(v=0, lty=1)
 text(x=0.1, y=bp ,labels = tail(down.top10$Description, 5), col = "black", xpd=T, cex=1.2, adj=0)
 
-# for source data
-upgo.1m = up.ora.df[,c(1:7)]
-downgo.1m = down.ora.df[,c(1:7)]
 
-write_xlsx(upgo.1m, path = sprintf("%s/excel/Fig1M_UP.xlsx", dir))
-write_xlsx(downgo.1m, path = sprintf("%s/excel/Fig1M_DOWN.xlsx", dir))
 
-cd8.up = up.ora
-cd8.upgo = up.ora.df
-cd8.down = down.ora
-cd8.downgo = down.ora.df
-#save(cd8.up, cd8.upgo, cd8.down, cd8.downgo, file = sprintf("%s/Rdata/Figure1M.Rdata", dir))
 
