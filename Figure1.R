@@ -2,7 +2,7 @@
 # Figure 1A
 ############################
 
-ici = as.data.frame(read_excel(path = sprintf("%s/0_reviewer/ICI-weight/PMID39681653.xlsx", dir), col_names = T))
+ici = as.data.frame(read_excel(path = "yourPath/Figure1A.xlsx", col_names = T))
 ici = ici[,c(1,2,3,4,6,10,11,12)]
 ici = ici[ici$`Grp #` %in% c("1", "2"),]
 ici$`Grp #`[ici$`Grp #` == "1"] = "Control"
@@ -348,6 +348,7 @@ bp = barplot(tail(down.top10$logFDR, 5), xlim = c(0,30), horiz = T, xaxt = 'n', 
              width = 0.7, border = NA, col = "cornflowerblue", main = " ", cex.main = 1.5, add = T)
 abline(v=0, lty=1)
 text(x=0.1, y=bp ,labels = tail(down.top10$Description, 5), col = "black", xpd=T, cex=1.2, adj=0)
+
 
 
 
