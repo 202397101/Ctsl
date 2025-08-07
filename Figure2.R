@@ -1,9 +1,6 @@
 ############################
 # Figure2A
 ############################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/3-1-8_scRNA.Rdata", dir)) #s.integrated, markers
 
 library('Seurat')
 library('tidyverse')
@@ -54,7 +51,6 @@ library(biomaRt)
 mycol = c("mediumpurple","orange","hotpink","cadetblue","gold","maroon","#A9E469","dodgerblue")
 grcol = c('lightgoldenrod1', 'mediumturquoise')
 
-tiff(filename = sprintf("%s/figure_revision/Figure2A_group.tiff", dir), width = 10, height = 10, units = 'cm', res = 300)
 DimPlot(s.integrated, reduction='umap', group.by='cachexia', cols = grcol) + ggtitle('') + 
   theme(panel.border = element_rect(colour = "black", fill=NA, size=0.5), 
         axis.ticks = element_blank(),
@@ -63,9 +59,7 @@ DimPlot(s.integrated, reduction='umap', group.by='cachexia', cols = grcol) + ggt
         axis.title.x = element_blank(),
         axis.title.y = element_blank(),
         legend.position = "none") 
-dev.off()
 
-tiff(filename = sprintf("%s/figure_revision/Figure2B_celltype.tiff", dir), width = 10, height = 10, units = 'cm', res = 300)
 DimPlot(s.integrated, group.by = 'cellType', label=F, cols = mycol) + ggtitle('')+ 
   theme(panel.border = element_rect(colour = "black", fill=NA, size=0.5), 
         axis.ticks = element_blank(),
@@ -74,14 +68,11 @@ DimPlot(s.integrated, group.by = 'cellType', label=F, cols = mycol) + ggtitle(''
         axis.title.x = element_blank(),
         axis.title.y = element_blank(),
         legend.position = "none") 
-dev.off()
 
 
 ############################
 # Figure2B, C
 ############################
-dir = "C:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-load(file = sprintf("%s/Rdata/3-1-8_scRNA.Rdata", dir)) #s.integrated, markers
 
 library('Seurat')
 library('tidyverse')
@@ -176,18 +167,11 @@ ggplot(muscle.pop, aes(x = reorder(cellType, percent), y=percent, fill=cellType)
         legend.position = "left",
         plot.title = element_text(size = 10, hjust = 0.5))
 
-# for source data
-write.xlsx(lung.pop, file = sprintf("%s/excel/Fig2B.xlsx", dir), rowNames=T)
-write.xlsx(muscle.pop, file = sprintf("%s/excel/Fig2C.xlsx", dir), rowNames=T)
-
-
 
 
 ############################
 # Figure 2D-1
 ############################
-dir = "C:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-load(file = sprintf("%s/Rdata/3-1-8_scRNA.Rdata", dir)) #s.integrated, markers
 
 library('Seurat')
 library('tidyverse')
@@ -234,45 +218,35 @@ library(GOfuncR)
 library(biomaRt)
 
 
-DefaultAssay(s.integrated) = "integrated"
+
 s.integrated@meta.data$cachexia = factor(s.integrated@meta.data$cachexia, levels = c("muscle", "lung"))
 
-tiff(filename = sprintf("%s/figure_revision/Figure2D_Itga.tiff", dir), width = 7, height = 8, units = 'cm', res = 300)
 FeaturePlot(s.integrated, features = 'Itga1', order = TRUE, split.by = 'cachexia', min.cutoff = 0, max.cutoff = 'q90', by.col = F) & theme(legend.position = "right", legend.title = element_text(size = 12), legend.text = element_text(size = 10), axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.title.y = element_blank(), strip.text.y = element_blank()) 
-dev.off()
 
-tiff(filename = sprintf("%s/figure_revision/Figure2D_Cd8a.tiff", dir), width = 7, height = 8, units = 'cm', res = 300)
 FeaturePlot(s.integrated, features = 'Cd8a', order = TRUE, split.by = 'cachexia', min.cutoff = 0, max.cutoff = 0.08, by.col = F) & theme(legend.position = "right", legend.title = element_text(size = 12), legend.text = element_text(size = 10), axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.title.y = element_blank())
-dev.off()
+
 
 genes = c('Cd3d','Cd3e','Cd3g')
-tiff(filename = sprintf("%s/figure_revision/Figure2D_Cd3.tiff", dir), width = 18, height = 8, units = 'cm', res = 300)
 FeaturePlot(s.integrated, features = genes, order = TRUE, split.by = 'cachexia', min.cutoff = 0, max.cutoff = 'q81', by.col = F) & theme(legend.position = "right", legend.title = element_text(size = 12), legend.text = element_text(size = 10), axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.title.y = element_blank())
-dev.off()
+
 
 
 
 ############################
 # Figure 2D-2
 ############################
-DefaultAssay(s.integrated) = "integrated"
+
 genes = c('Prf1', 'Gzma', 'Gzmb')
 s.integrated@meta.data$cachexia = factor(s.integrated@meta.data$cachexia, levels = c("muscle", "lung"))
 
-tiff(filename = sprintf("%s/figure_revision/Figure2G.tiff", dir), width = 18, height = 8, units = 'cm', res = 300)
 FeaturePlot(s.integrated, features = genes, order = TRUE, split.by = 'cachexia', min.cutoff = 0, max.cutoff = 'q95', by.col = F) & theme(legend.position = "right", legend.title = element_text(size = 12), legend.text = element_text(size = 10), axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.title.y = element_blank())
-dev.off()
+
 
 
 
 ############################
 # Figure 2E
 ############################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-load(file = sprintf("%s/Rdata/3-1-8_scRNA.Rdata", dir)) #s.integrated, markers
-load(file = sprintf("%s/Rdata/5-2_Tcell_vs_others_markers.Rdata", dir)) # markers.li
-load(file = sprintf("%s/Rdata/5-2_Tlike.vs.Tcell_DEGs.Rdata", dir)) #tlike.vs.tcell, tcell.vs.tlike
-load(file = sprintf("%s/Rdata/Figure2F_KEGG.Rdata", dir)) #muscle.tcell, muscle.tlike
 
 library('Seurat')
 library('tidyverse')
@@ -362,16 +336,11 @@ abline(v=0, lty=1)
 text(x=0.2, y=bp ,labels=tlike.top$Description, col = "black", xpd=T, cex=1.2, adj=0)
 
 
-# for source data
-write_xlsx(tcell.vs.tlike.ora, path = sprintf("%s/excel/Fig2E.xlsx", dir))
-write_xlsx(tlike.vs.tcell.ora, path = sprintf("%s/excel/Fig2F.xlsx", dir))
-
 
 ############################
 # Figure 2F
 ############################
 
-######### KEGG 집컴퓨터.
 cluster.updeg = list()
 i=2
 for (i in 1:length(markers.li)){
@@ -428,11 +397,5 @@ bp = barplot(muscle.tcell.top$p.adjust, xlim = c(0, 14), horiz = T, xaxt = 'n', 
              width = 0.7, border = NA, col = "lightsalmon", main = "", cex.main = 1.5, add = T)
 abline(v=0, lty=1)
 text(x=0.2, y=bp ,labels=muscle.tcell.top$Description, col = "black", xpd=T, cex=1.2, adj=0)
-
-#save(muscle.tcell, muscle.tlike, file = sprintf("%s/Rdata/Figure2F_KEGG.Rdata", dir))
-
-# for source data
-write_xlsx(muscle.tcell[,c(3:12,14)], path = sprintf("%s/excel/Fig2E_kegg.xlsx", dir))
-write_xlsx(muscle.tlike[,c(3:12,14)], path = sprintf("%s/excel/Fig2F_kegg.xlsx", dir))
 
 
