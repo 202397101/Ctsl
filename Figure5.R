@@ -1,12 +1,6 @@
 ######################
 # Figure 5A - lung
 ######################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
-load(file = sprintf("%s/Rdata/Figure6_EFG_Ctsl-network.Rdata", dir)) # ppi1, ctsl.graph
-load(file = sprintf("%s/Rdata/Figure3_Ctsl-rank.Rdata", dir)) #ctsl.list
-
 
 library(igraph)
 library(RCy3)
@@ -55,7 +49,6 @@ for (i in colnames(lung.cor)) {
 lcor.res = lcor.res[!is.na(lcor.res)]  
 lcor.res = sort(lcor.res, decreasing = TRUE) 
 
-#save(cor.res, lcor.res, file = sprintf("%s/Rdata/Figure5.Rdata", dir)) 
 
 ######### rank plot
 lcor.df = data.frame(Gene = names(lcor.res), Correlation = lcor.res)
@@ -63,8 +56,7 @@ lcor.df$Rank = rank(-lcor.df$Correlation)
 lcor.df = lcor.df[-1,]
 l.top10 = lcor.df[order(lcor.df$Correlation, decreasing = T),][1:10,]
 
-# Rank Plot 그리기
-tiff(filename = sprintf("%s/figure_revision/Figure5A-tumor.tiff", dir), width = 5, height = 5, units = 'cm', res = 300)
+
 ggplot(lcor.df, aes(x = Rank, y = Correlation)) +
   geom_point(color = "dimgrey", size = 0.5) +  
   geom_line(color = "dimgrey", size = 0.1) +  
@@ -85,10 +77,6 @@ ggplot(lcor.df, aes(x = Rank, y = Correlation)) +
         panel.grid.minor = element_blank(),
         panel.grid.major.y = element_line(size = 0.2, color = "grey"),
         panel.grid.major.x = element_line(size = 0.2, color = "grey"))
-dev.off()
-
-#save(lcor.df, mcor.df, file = sprintf("%s/Rdata/Figure5A_correlation.Rdata", dir))
-
 
 
 ##########################
@@ -96,12 +84,6 @@ dev.off()
 ##########################
 
 ################ 1. GA muscle
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
-load(file = sprintf("%s/Rdata/Figure6_EFG_Ctsl-network.Rdata", dir)) # ppi1, ctsl.graph
-load(file = sprintf("%s/Rdata/Figure5.Rdata", dir)) # cor.res, lcor.res
-
 library(igraph)
 library(RCy3)
 library(RandomWalkRestartMH)
@@ -129,11 +111,6 @@ ga.cor = cor.tpm[c(6:8,12:14),]
 
 
 ################ 2. GSE107470
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-rdata = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = T)
-fname = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = F)
-fname = gsub(".Rdata", "", fname)
 
 for (i in seq_along(rdata)) {
   file_path = rdata[i]  
@@ -166,11 +143,6 @@ d1.cor = GSE107470_em[1:10,]
 
 
 ############# 3. GSE144567
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-rdata = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = T)
-fname = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = F)
-fname = gsub(".Rdata", "", fname)
 
 for (i in seq_along(rdata)) {
   file_path = rdata[i]  
@@ -201,11 +173,6 @@ d3.cor = GSE144567_em[1:10,]
 
 
 ############# 5. GSE114820
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-rdata = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = T)
-fname = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = F)
-fname = gsub(".Rdata", "", fname)
 
 for (i in seq_along(rdata)) {
   file_path = rdata[i]  
@@ -222,7 +189,7 @@ for (i in seq_along(rdata)) {
   cat("Loaded:", file_name, "\n")
 }
 
-GSE114820.annot = GSE114820_annotation[GSE114820_annotation$tissue == "gastrocnemius muscle" ,] #muscle인 것만 골라오기.
+GSE114820.annot = GSE114820_annotation[GSE114820_annotation$tissue == "gastrocnemius muscle" ,] 
 
 GSE114820_em = GSE114820_em[,match(rownames(GSE114820.annot),colnames(GSE114820_em))]
 ctsl.mhc1 = GSE114820_ginfo[GSE114820_ginfo$Symbol %in% ctsl.neighbor,]
@@ -236,14 +203,12 @@ GSE114820_em = data.frame(t(log2(GSE114820_em+1)))
 d5.cor = GSE114820_em
 
 
-# TA 추가.
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
+# TA 
 
 cor.tpm = ta.tpm[match(ctsl.neighbor, rownames(ta.tpm)),]
 cor.tpm = data.frame(t(log2(cor.tpm+1)))
 ta.cor = cor.tpm[c(1:5,9:12),]
 
-# 데이터프레임 합치기.
 c.genes = Reduce(intersect, list(colnames(ta.cor), colnames(d1.cor), colnames(d3.cor), colnames(d5.cor), colnames(ga.cor))) #20016
 merge.df = do.call(rbind, list(ta.cor[,c.genes], ga.cor[,c.genes], d1.cor[,c.genes], d3.cor[,c.genes], d5.cor[,c.genes]))
 
@@ -261,10 +226,7 @@ for (i in colnames(merge.df)) {
 cor.res = cor.res[!is.na(cor.res)]  
 cor.res = sort(cor.res, decreasing = TRUE)  
 
-which(names(cor.res) == "Bnip3")
 
-
-################################################## 시작!
 ######### rank plot
 mcor.df = data.frame(Gene = names(cor.res), Correlation = cor.res)
 mcor.df$Rank = rank(-mcor.df$Correlation)  
@@ -272,8 +234,6 @@ mcor.df = mcor.df[-1,]
 m.top10 = mcor.df[order(mcor.df$Correlation, decreasing = T),][1:10,]
 
 
-# Rank Plot 그리기
-tiff(filename = sprintf("%s/figure_revision/Figure5A-muscle.tiff", dir), width = 5, height = 5, units = 'cm', res = 300)
 ggplot(mcor.df, aes(x = Rank, y = Correlation)) +
   geom_point(color = "dimgrey", size = 0.5) +  
   geom_line(color = "dimgrey", size = 0.1) +  
@@ -293,23 +253,12 @@ ggplot(mcor.df, aes(x = Rank, y = Correlation)) +
         panel.grid.minor = element_blank(),
         panel.grid.major.y = element_line(size = 0.2, color = "grey"),
         panel.grid.major.x = element_line(size = 0.2, color = "grey"))
-dev.off()
-
-
-
-# for source data
-write.xlsx(lcor.df, file = sprintf("%s/excel/Fig5A_tumor.xlsx", dir), rowNames=T)
-write.xlsx(mcor.df, file = sprintf("%s/excel/Fig5A_muscle.xlsx", dir), rowNames=T)
-
 
 
 
 ##########################
 # Figure 5B
 ##########################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure5A_correlation.Rdata", dir)) #lcor.df, mcor.df
 
 library(igraph)
 library(RCy3)
@@ -330,7 +279,7 @@ library(colorRamp2)
 library(ggrepel)
 
 
-########### rank 로.
+
 mcor.df$Rank = mcor.df$Rank-1
 lcor.df$Rank = lcor.df$Rank-1
 rdf = data.frame(Muscle=mcor.df, Tumor=lcor.df[match(mcor.df$Gene, lcor.df$Gene), ])
@@ -338,7 +287,6 @@ identical(rdf$Muscle.Gene, rdf$Tumor.Gene)
 rdf.sorted = rdf %>% arrange(Muscle.Rank + Tumor.Rank)
 top10 = head(rdf.sorted, 10)
 
-tiff(filename = sprintf("%s/figure_revision/Figure5B.tiff", dir), width = 7, height = 7, units = 'cm', res = 300)
 ggplot(rdf, aes(x = Muscle.Rank, y = Tumor.Rank, label = Muscle.Gene)) +
   geom_point(aes(color = ifelse(Muscle.Gene == "Bnip3", "red", "darkgrey")), alpha = 0.8, size = 1) +
   geom_point(data = subset(rdf, Muscle.Gene == "Bnip3"), aes(x = Muscle.Rank, y = Tumor.Rank), color = "red", size = 3, alpha = 0.3) +
@@ -355,19 +303,12 @@ ggplot(rdf, aes(x = Muscle.Rank, y = Tumor.Rank, label = Muscle.Gene)) +
         panel.grid.major.x = element_line(size = 0.2, color = "grey"),
         plot.margin = margin(5,15,5,5),
         panel.border = element_rect(color = "black", fill = NA, size = 0.7))
-dev.off()
-
-# for source data
-write.xlsx(rdf, file = sprintf("%s/excel/Fig5B.xlsx", dir), rowNames=T)
 
 
-
+                   
 ##########################
 # Figure 5C - tumor
 ##########################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
 
 library(igraph)
 library(RCy3)
@@ -405,14 +346,13 @@ legend("bottom", legend=c("CON", "TB_Tumor"), col= c("grey","darkorange"), pch=c
 
 corrt = cor.test(x = cor.tpm[[2]], y = cor.tpm[[1]], method = "pearson")
 
-tiff(filename = sprintf("%s/figure_revision/Figure5C-tumor.tiff", dir), width = 7, height = 7, units = 'cm', res = 300)
 par(mar=c(3,3,2,1), mgp = c(2,1,0))
 plot(cor.tpm[[2]] ~ cor.tpm[[1]], xlab = "", ylab = "", pch=pch_values, cex = 1, col = cor.tpm$color, main = "", cex.main = 1.5, cex.axis=1, cex.lab=1, xlim=c(6,10), ylim = c(4,11), axes = F)
 axis(1, lwd=1, cex.axis=1.2)
 axis(2, lwd=1, cex.axis=1.2, at=seq(4,12,2), labels=seq(4,12,2))
 box(lwd=1)
 abline(lm(cor.tpm[[2]] ~ cor.tpm[[1]]), col = "black", lwd=2, lty = 3)
-dev.off()
+
 
 
 
@@ -421,11 +361,6 @@ dev.off()
 ##########################
 
 ################ 1. GA muscle
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
-load(file = sprintf("%s/Rdata/Figure5A_cor.Rdata", dir)) #ga.cor, d1.cor, d3.cor, d5.cor, total.cor, all.cor
-
 
 library(igraph)
 library(RCy3)
@@ -450,11 +385,6 @@ ga.cor = cor.tpm[c(6:8,12:14),]
 
 
 ################ 2. GSE107470
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-rdata = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = T)
-fname = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = F)
-fname = gsub(".Rdata", "", fname)
 
 for (i in seq_along(rdata)) {
   file_path = rdata[i]  
@@ -487,11 +417,6 @@ d1.cor = GSE107470_em[1:10,]
 
 
 ############# 3. GSE144567
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-rdata = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = T)
-fname = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = F)
-fname = gsub(".Rdata", "", fname)
 
 for (i in seq_along(rdata)) {
   file_path = rdata[i]  
@@ -522,11 +447,6 @@ d3.cor = GSE144567_em[1:10,]
 
 
 ############# 5. GSE114820
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-rdata = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = T)
-fname = list.files(path = sprintf("%s/받은자료/GEO/read count", dir), pattern = "\\.Rdata", full.names = F)
-fname = gsub(".Rdata", "", fname)
 
 for (i in seq_along(rdata)) {
   file_path = rdata[i]  
@@ -601,10 +521,8 @@ s.col = c("ga_con" = "gold",
           "d5_cac" = "forestgreen")
 total.cor$color = s.col[as.character(total.cor$sample)]
 
-################################################################ 시작!
 
-# TA 추가.
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
+# TA 
 
 cor.tpm = ta.tpm[match(c('Ctsl','Bnip3'), rownames(ta.tpm)),]
 cor.tpm = data.frame(t(log2(cor.tpm+1)))
@@ -631,7 +549,6 @@ legend("bottom", legend=c("muscle_CON", "muscle_TB", "D1_CON", "D1_TB", "D3_CON"
 
 corrt = cor.test(x = cor.tpm[[2]], y = cor.tpm[[1]], method = "pearson")
 
-tiff(filename = sprintf("%s/figure_revision/Figure5C-muscle.tiff", dir), width = 7, height = 7, units = 'cm', res = 300)
 par(mar=c(3,3,2,1), mgp = c(2,1,0))
 plot(all.cor[[2]] ~ all.cor[[1]], xlab = "", ylab = "", pch=pch_values, cex = 1, col = all.cor$color, main = "", cex.main = 1.5, cex.axis=1, cex.lab=1, xlim=c(1,15), ylim = c(3,15), axes = F)
 axis(1, lwd=1, cex.axis=1.2, at=seq(1,15,3), labels=seq(1,15,3))
@@ -644,25 +561,12 @@ abline(lm(all.cor[[2]] ~ all.cor[[1]]), col = "black", lwd=2, lty = 3)
 #x.pos1 = par("usr")[1] + diff(par("usr")[1:2])*0.8
 #y.pos1 = par("usr")[4] - diff(par("usr")[3:4])*0.9
 #text(x.pos1, y.pos1, paste0("r =", round(corrt$estimate, 3)), cex=1.2, col = "black")  
-dev.off()
-
-
-# for source data
-write.xlsx(cor.tpm, file = sprintf("%s/excel/Fig5C_tumor.xlsx", dir), rowNames=T)
-write.xlsx(all.cor, file = sprintf("%s/excel/Fig5C_muscle.xlsx", dir), rowNames=T)
-
 
 
 
 #################
 # Figure 5D
 #################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
-load(file = sprintf("%s/Rdata/Figure6_EFG_Ctsl-network.Rdata", dir)) # ppi1, ctsl.graph
-load(file = sprintf("%s/Rdata/Figure3_Ctsl-rank.Rdata", dir)) #ctsl.list
-
 
 library(igraph)
 library(RCy3)
@@ -759,7 +663,6 @@ up.down.cd8 = rbind(up.cd8,down.cd8)
 
 ctsl.list = list(lung=up.lung, IgG.TA=up.igg, aCD8.TA=down.cd8)
 
-#save(ctsl.list, file = sprintf("%s/Rdata/Figure3_Ctsl-rank.Rdata", dir))
 
 ###############################################
 lung.gene = ctsl.list$lung$Genes[-1]
@@ -769,11 +672,9 @@ commonGeneli = list(Lung=lung.gene, TA=igg.gene, 'anti-CD8a'=cd8.gene)
 
 commonGenes = Reduce(intersect, list(lung.gene, igg.gene, cd8.gene))
 
-tiff(filename = sprintf("%s/figure_revision/Figure5B.tiff", dir), width = 7, height = 7, units = 'cm', res = 300)
 ggvenn(commonGeneli, show_percentage = F, 
        fill_color = c("lightgoldenrod1","purple","dodgerblue"), fill_alpha = 0.5, stroke_color = "black", 
        stroke_size = 0.3, set_name_size = 0, text_color = "black", text_size = 7) 
-dev.off()
 
 
 
@@ -782,10 +683,6 @@ dev.off()
 #############################################
 # Figure 5E,F,G,H
 #############################################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
-
 
 library(igraph)
 library(RCy3)
@@ -925,9 +822,5 @@ bp = barplot(tail(ta.go$logFDR,7), xlim = c(0, 16), horiz = T, xaxt = 'n', yaxt 
 abline(v=0, lty=1)
 text(x=0.2, y=bp ,labels=tail(ta.go$Description,7), col = "black", xpd=T, cex=1.2, adj=0)
 
-
-# for source data
-write.xlsx(lung.go, file = sprintf("%s/excel/Fig5E.xlsx", dir), rowNames=T)
-write.xlsx(ta.go, file = sprintf("%s/excel/Fig5F.xlsx", dir), rowNames=T)
 
 
