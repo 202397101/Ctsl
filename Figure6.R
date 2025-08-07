@@ -1,12 +1,6 @@
 ##########################
 # Figure 6A
 ##########################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-dir_TCGA = "E:/Dropbox/PNU/시스템생물학연구실/DB/TCGA"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
-load(file = sprintf("%s/Rdata/TCGA_DEG_tumor_vs_normal.Rdata", dir_TCGA)) # degl
-
 
 library(igraph)
 library(RCy3)
@@ -22,8 +16,6 @@ library(GOfuncR)
 library(ggvenn)
 library(homologene)
 
-
-luad = degl$LUAD
 
 # Ctsl - Bnip3 network
 ppi = read.csv(file = "E:/Dropbox/PNU/시스템생물학연구실/DB/string/mus_musculus/10090.protein.links.v12.0.txt", sep = " ", header = T, stringsAsFactors = F, quote = "")
@@ -45,8 +37,6 @@ cb.lung = cb.ppi[cb.ppi$protein1 %in% up.lung.degre$Genes & cb.ppi$protein2 %in%
 cb.lung = graph_from_edgelist(as.matrix(cb.lung), directed = F)
 cb.lung = igraph::simplify(cb.lung)
 
-
-# mouse -> human gene
 converted_genes = homologene(names(V(cb.lung)), inTax = 10090, outTax = 9606)
 converted_genes[4,2] = 'CTSL'
 converted_genes[30, ] = c('Pmaip1', 'PMAIP1')
@@ -62,10 +52,6 @@ createNetworkFromIgraph(cb.lung, "Figure6A")
 ##########################
 # Figure 6C
 ##########################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-dir_TCGA = "E:/Dropbox/PNU/시스템생물학연구실/DB/TCGA"
-
-load(file = sprintf("%s/Rdata/TCGA_tpml_pan-cancer_v39.Rdata", dir_TCGA)) # tpml, clinical.sinfo
 
 library(TCGAbiolinks)
 library(SummarizedExperiment)
@@ -136,12 +122,6 @@ for(i in 1:length(tcga.tpm)){
 ##########################
 # Figure 6D TCGA-LUAD
 ##########################
-dir = "C:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-dir_TCGA = "C:/Dropbox/PNU/시스템생물학연구실/DB/TCGA"
-
-load(file = sprintf("%s/Rdata/TCGA_rcml_pan-cancer_v39.Rdata", dir_TCGA)) #rcml, clinical.sinfo
-load(file = sprintf("%s/Rdata/Figure6_TCGA_high-CTSL-BNIP3_vs_low-CTSL-BNIP3_DEGs.Rdata", dir)) #deg
-source("C:/Dropbox/PNU/시스템생물학연구실/data/gluconeogenesis/bulkRNA/Rscripts/11-2_GSEAplot.R")
 
 library(TCGAbiolinks)
 library(SummarizedExperiment)
@@ -224,7 +204,6 @@ deg = results(deg, pAdjustMethod = "fdr", independentFiltering = F)
 deg = data.frame(deg)
 deg = data.frame(Genes = rownames(dce), deg[match(rownames(dce), rownames(deg)), ], keep, check.names = F)
 
-#save(deg, file = sprintf("%s/Rdata/Figure6_TCGA_high-CTSL-BNIP3_vs_low-CTSL-BNIP3_DEGs.Rdata", dir))
 
 ########################### GSEA
 deg = deg[order(deg$padj),]
@@ -258,10 +237,6 @@ hcol=c("blue", "white", "red")
 ##########################
 # Figure 6D our data
 ##########################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
-source("E:/Dropbox/PNU/시스템생물학연구실/data/gluconeogenesis/bulkRNA/Rscripts/11-2_GSEAplot.R")
 
 library(igraph)
 library(RCy3)
@@ -300,5 +275,6 @@ labs = list(mt="Metastasis", redgroup.lab="Tumor", bluegroup.lab="CON", mlab="")
 length(rk)
 xmax = 32500
 hcol=c("blue", "white", "red")
+
 
 
