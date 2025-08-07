@@ -18,8 +18,8 @@ library(homologene)
 
 
 # Ctsl - Bnip3 network
-ppi = read.csv(file = "E:/Dropbox/PNU/시스템생물학연구실/DB/string/mus_musculus/10090.protein.links.v12.0.txt", sep = " ", header = T, stringsAsFactors = F, quote = "")
-pinfo = read.csv(file = "E:/Dropbox/PNU/시스템생물학연구실/DB/string/mus_musculus/10090.protein.info.v12.0.txt", sep = "\t", header = T, stringsAsFactors = F, quote = "")
+ppi = read.csv(file = "yourPath/10090.protein.links.v12.0.txt", sep = " ", header = T, stringsAsFactors = F, quote = "")
+pinfo = read.csv(file = "yourPath/10090.protein.info.v12.0.txt", sep = "\t", header = T, stringsAsFactors = F, quote = "")
 ppi$protein1 = pinfo$preferred_name[match(ppi$protein1, pinfo$X.string_protein_id)]
 ppi$protein2 = pinfo$preferred_name[match(ppi$protein2, pinfo$X.string_protein_id)]
 ppi1 = ppi[ppi$combined_score>500 ,]
@@ -78,7 +78,7 @@ for(i in 1:length(tcga.tpm)){
   
   ctsl = tpm[match('CTSL', rownames(tpm)),]
   ctsl = ctsl[order(ctsl)]
-  q.ctsl = ceiling(quantile(1:length(ctsl), probs = c(0.5, 0.5))) # low, high 분류하기 위해 삼등분.
+  q.ctsl = ceiling(quantile(1:length(ctsl), probs = c(0.5, 0.5))) 
   low.ctsl = ctsl[1:q.ctsl[1]] 
   high.ctsl = ctsl[q.ctsl[2]:length(ctsl)] 
   low.id.ctsl = names(low.ctsl)
@@ -115,7 +115,7 @@ for(i in 1:length(tcga.tpm)){
   
   s.plot = sp$plot + annotate("text", x = max(fit$time)-1000, y = 0.8, label = paste0("HR=", hr), size = 5, color = "black")
   
-  ggsave(file = paste0(dir, "/figure_revision/Figure6_", names(tcga.tpm)[i] ,".tiff"), plot = s.plot, width = 12, height = 10, units = 'cm', dpi = 300)
+  ggsave(file = paste0(yourPath, "/", names(tcga.tpm)[i] ,".tiff"), plot = s.plot, width = 12, height = 10, units = 'cm', dpi = 300)
 }
 
 
@@ -218,14 +218,14 @@ sum(duplicated(names(rk)))
 rk = rk[!duplicated(names(rk))]
 
 
-gsl = gmtPathways("C:/Dropbox/PNU/시스템생물학연구실/DB/msigdb/c2.all.v2024.1.Hs.symbols.gmt")
+gsl = gmtPathways("yourPath/c2.all.v2024.1.Hs.symbols.gmt")
 gsea = as.data.frame(fgsea(pathways = gsl, stats = rk, minSize = 10, maxSize = 500, nperm=100000))
 gsea.df = gsea %>% filter(padj<=0.01) %>% arrange(desc(NES))
 
 gsea.alonso = gsea[grep('ALONSO_', gsea$pathway),]
 
 gset = gsl[grep('ALONSO_METASTASIS_UP', names(gsl))]
-fname = sprintf("%s/0_reviewer/figure/3-8_metastasis.tif", dir)
+fname = "yourPath/TCGA_metastasis.tif"
 labs = list(mt="Metastasis", redgroup.lab="CTSL-BNIP high", bluegroup.lab="CTSL-BNIP3 low", mlab="")
 length(rk)
 xmax = 20000
@@ -263,18 +263,19 @@ rk = use$stat
 names(rk) = use$Genes
 rk = sort(rk, decreasing = T)
 
-gsl = gmtPathways("E:/Dropbox/PNU/시스템생물학연구실/DB/msigdb/c2.all.v2024.1.Hs.symbols.gmt")
+gsl = gmtPathways("yourPath/c2.all.v2024.1.Hs.symbols.gmt")
 gset = gsl[grep('ALONSO_METASTASIS_UP', names(gsl))]
 gset = lapply(gset, function(i) {
   gene = homologene(i, inTax = 9606, outTax = 10090)
   symbol = unique(gene$'10090')
 })
 
-fname = sprintf("%s/0_reviewer/figure/3-8_metastasis.tif", dir)
+fname =  "yourPath/ourdata_metastasis.tif"
 labs = list(mt="Metastasis", redgroup.lab="Tumor", bluegroup.lab="CON", mlab="")
 length(rk)
 xmax = 32500
 hcol=c("blue", "white", "red")
+
 
 
 
