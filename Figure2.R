@@ -176,11 +176,6 @@ ggplot(muscle.pop, aes(x = reorder(cellType, percent), y=percent, fill=cellType)
         legend.position = "left",
         plot.title = element_text(size = 10, hjust = 0.5))
 
-# for source data
-write.xlsx(lung.pop, file = sprintf("%s/excel/Fig2B.xlsx", dir), rowNames=T)
-write.xlsx(muscle.pop, file = sprintf("%s/excel/Fig2C.xlsx", dir), rowNames=T)
-
-
 
 
 ############################
@@ -234,7 +229,6 @@ library(GOfuncR)
 library(biomaRt)
 
 
-DefaultAssay(s.integrated) = "integrated"
 s.integrated@meta.data$cachexia = factor(s.integrated@meta.data$cachexia, levels = c("muscle", "lung"))
 
 tiff(filename = sprintf("%s/figure_revision/Figure2D_Itga.tiff", dir), width = 7, height = 8, units = 'cm', res = 300)
@@ -255,7 +249,6 @@ dev.off()
 ############################
 # Figure 2D-2
 ############################
-DefaultAssay(s.integrated) = "integrated"
 genes = c('Prf1', 'Gzma', 'Gzmb')
 s.integrated@meta.data$cachexia = factor(s.integrated@meta.data$cachexia, levels = c("muscle", "lung"))
 
@@ -362,16 +355,9 @@ abline(v=0, lty=1)
 text(x=0.2, y=bp ,labels=tlike.top$Description, col = "black", xpd=T, cex=1.2, adj=0)
 
 
-# for source data
-write_xlsx(tcell.vs.tlike.ora, path = sprintf("%s/excel/Fig2E.xlsx", dir))
-write_xlsx(tlike.vs.tcell.ora, path = sprintf("%s/excel/Fig2F.xlsx", dir))
-
-
 ############################
 # Figure 2F
 ############################
-
-######### KEGG 집컴퓨터.
 cluster.updeg = list()
 i=2
 for (i in 1:length(markers.li)){
@@ -428,11 +414,5 @@ bp = barplot(muscle.tcell.top$p.adjust, xlim = c(0, 14), horiz = T, xaxt = 'n', 
              width = 0.7, border = NA, col = "lightsalmon", main = "", cex.main = 1.5, add = T)
 abline(v=0, lty=1)
 text(x=0.2, y=bp ,labels=muscle.tcell.top$Description, col = "black", xpd=T, cex=1.2, adj=0)
-
-#save(muscle.tcell, muscle.tlike, file = sprintf("%s/Rdata/Figure2F_KEGG.Rdata", dir))
-
-# for source data
-write_xlsx(muscle.tcell[,c(3:12,14)], path = sprintf("%s/excel/Fig2E_kegg.xlsx", dir))
-write_xlsx(muscle.tlike[,c(3:12,14)], path = sprintf("%s/excel/Fig2F_kegg.xlsx", dir))
 
 
