@@ -203,7 +203,7 @@ GSE114820_em = data.frame(t(log2(GSE114820_em+1)))
 d5.cor = GSE114820_em
 
 
-# TA 
+############# TA 
 
 cor.tpm = ta.tpm[match(ctsl.neighbor, rownames(ta.tpm)),]
 cor.tpm = data.frame(t(log2(cor.tpm+1)))
@@ -522,7 +522,7 @@ s.col = c("ga_con" = "gold",
 total.cor$color = s.col[as.character(total.cor$sample)]
 
 
-# TA 
+############# TA 
 
 cor.tpm = ta.tpm[match(c('Ctsl','Bnip3'), rownames(ta.tpm)),]
 cor.tpm = data.frame(t(log2(cor.tpm+1)))
@@ -699,8 +699,8 @@ library(ggvenn)
 
 
 # Ctsl - Bnip3 network
-ppi = read.csv(file = "E:/Dropbox/PNU/시스템생물학연구실/DB/string/mus_musculus/10090.protein.links.v12.0.txt", sep = " ", header = T, stringsAsFactors = F, quote = "")
-pinfo = read.csv(file = "E:/Dropbox/PNU/시스템생물학연구실/DB/string/mus_musculus/10090.protein.info.v12.0.txt", sep = "\t", header = T, stringsAsFactors = F, quote = "")
+ppi = read.csv(file = "yourPath/10090.protein.links.v12.0.txt", sep = " ", header = T, stringsAsFactors = F, quote = "")
+pinfo = read.csv(file = "yourPath/10090.protein.info.v12.0.txt", sep = "\t", header = T, stringsAsFactors = F, quote = "")
 ppi$protein1 = pinfo$preferred_name[match(ppi$protein1, pinfo$X.string_protein_id)]
 ppi$protein2 = pinfo$preferred_name[match(ppi$protein2, pinfo$X.string_protein_id)]
 ppi1 = ppi[ppi$combined_score>500 ,]
@@ -821,6 +821,7 @@ bp = barplot(tail(ta.go$logFDR,7), xlim = c(0, 16), horiz = T, xaxt = 'n', yaxt 
              width = 0.7, border = NA, col = "moccasin", main = "", cex.main = 1.5, add = T)
 abline(v=0, lty=1)
 text(x=0.2, y=bp ,labels=tail(ta.go$Description,7), col = "black", xpd=T, cex=1.2, adj=0)
+
 
 
 
