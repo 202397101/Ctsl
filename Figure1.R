@@ -1,7 +1,6 @@
 ############################
 # Figure 1A
 ############################
-dir = "C:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
 
 library(readxl)
 library(ggplot2)
@@ -66,7 +65,6 @@ tm_pct = tm_pct %>%
   mutate(Day_f = factor(Day, levels = c(13), labels = c("Day 13")))
 
 
-tiff(filename=sprintf("%s/figure_revision/Figure1A_tumor.tiff", dir), width=4, height=5, units = 'cm',res=300)
 ggplot() +
   stat_summary(data = tm, aes(x = Day_f, y = delta, fill = response), fun = median, geom = "col",
                position = position_dodge2(width = 0.4, padding = 0.4), width = 0.4, alpha = 0.8) +
@@ -85,7 +83,6 @@ ggplot() +
     legend.position = "none",
     panel.grid = element_blank(),
     axis.line = element_line(color = "black", size = 0.2))
-dev.off()
 
 
 # tumor free body weight
@@ -118,7 +115,6 @@ bw_pct = bw_pct %>%
   mutate(Day_f = factor(Day, levels = c(13), labels = c("Day 13")))
 
 
-tiff(filename=sprintf("%s/figure_revision/Figure1A_weight.tiff", dir), width=4, height=5, units = 'cm',res=300)
 ggplot() +
   stat_summary(data = bw, aes(x = Day_f, y = delta, fill = response), fun = median, geom = "col",
                position = position_dodge2(width = 0.4, padding = 0.4), width = 0.4, alpha = 0.8) +
@@ -138,16 +134,11 @@ ggplot() +
     panel.grid = element_blank(),
     axis.line = element_line(color = "black",size = 0.2))
 
-dev.off()
-
 
 
 ############################
 # Figure 1J
 ############################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
 
 library(ggplot2)
 library(cluster)
@@ -171,22 +162,19 @@ summary(pca)
 xx1 = as.data.frame(xx)
 xx1$samples = rep(c("Con", "Anti-CD8", "IgG", "Anti-PD-L1"), c(5,3,4,3))
 
-tiff(filename=sprintf("%s/figure_revision/Figure1J.tiff", dir), width=10, height=10, units = 'cm',res=300)
+
 autoplot(pca, data = xx1, colour = 'samples', frame = T, label = F, label.size = 3) + 
   ggtitle(paste0("PCA ", nrow(m)," genes"))+
   scale_color_manual(values = c("Con" = "black", "Anti-CD8" = "purple", "IgG" = "red2", "Anti-PD-L1" = "blue1"))+
   scale_fill_manual(values = c("Con" = "white", "Anti-CD8" = "white", "IgG" = "white", "Anti-PD-L1" = "white"))+
   theme_bw()+
   theme(legend.position = "none", axis.text.x = element_text(size = 12), axis.text.y = element_text(size = 12))
-dev.off()
+
 
 
 ############################
 # Figure 1K
 ############################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
 
 library(ggplot2)
 library(gridExtra)
@@ -250,9 +238,6 @@ text(x=0.2, y=bp ,labels = tail(downgo$Description, 5), col = "black", xpd=T, ce
 ############################
 # Figure 1L
 ############################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
 
 library(igraph)
 library(RCy3)
@@ -318,9 +303,6 @@ text(x=0.1, y=bp ,labels = tail(down.ora.df$Description, 5), col = "black", xpd=
 ############################
 # Figure 1M
 ############################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure6_RCM_TPM_DEGL.Rdata", dir)) #ta.rcm, ta.tpm, ta.ginfo, ta.sinfo, ta.degl, ga.lung.rcm, ga.lung.tpm, ga.lung.ginfo, ga.lung.sinfo, ga.lung.degl
 
 library(igraph)
 library(RCy3)
@@ -386,6 +368,7 @@ bp = barplot(tail(down.top10$logFDR, 5), xlim = c(0,30), horiz = T, xaxt = 'n', 
              width = 0.7, border = NA, col = "cornflowerblue", main = " ", cex.main = 1.5, add = T)
 abline(v=0, lty=1)
 text(x=0.1, y=bp ,labels = tail(down.top10$Description, 5), col = "black", xpd=T, cex=1.2, adj=0)
+
 
 
 
