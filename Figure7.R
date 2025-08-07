@@ -1,13 +1,6 @@
 #############################################
 # Figure 7A GTEx
 #############################################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-#dir_GTEx = "E:/Dropbox/PNU/시스템생물학연구실/DB/GTEx"
-
-#load(file = sprintf("%s/GTEx_RCM_TPM.Rdata", dir_GTEx)) #muscle.tpm, muscle.rcm
-load(file = "E:/Dropbox/PNU/시스템생물학연구실/DB/GTEx/rcm_muscle.Rdata") #ginfo, rcm
-load(file = sprintf("%s/Rdata/Figure7_GTEx_muscle_CTSL-BNIP3-high_vs_CTSL-BNIP3-low_rcm_DEG.Rdata", dir)) #deg
-
 
 library(igraph)
 library(RCy3)
@@ -41,7 +34,6 @@ tissue = tissue$`Muscle - Skeletal`
 rcm = muscle.rcm[,colnames(muscle.rcm) %in% tissue]
 rcm = na.omit(rcm)
 
-#save(rcm, ginfo, file = "E:/Dropbox/PNU/시스템생물학연구실/DB/GTEx/rcm_muscle.Rdata")
 
 ###########################################################################################
 
@@ -102,7 +94,6 @@ deg = results(deg, pAdjustMethod = "fdr", independentFiltering = F)
 deg = data.frame(deg)
 deg = data.frame(Genes = rownames(dce), deg[match(rownames(dce), rownames(deg)), ], keep, check.names = F)
 
-#save(low.id,high.id, deg, file = sprintf("%s/Rdata/Figure7_GTEx_muscle_CTSL-BNIP3-high_vs_CTSL-BNIP3-low_rcm_DEG.Rdata", dir))
 
 ###################################################################################
 
@@ -138,7 +129,6 @@ ta = cb.ppi[cb.ppi$protein1 %in% ud & cb.ppi$protein2 %in% ud,]
 ta = graph_from_edgelist(as.matrix(ta), directed = F)
 ta = igraph::simplify(ta)
 
-# mouse -> human gene
 converted_genes = homologene(names(V(ta)), inTax = 10090, outTax = 9606)
 length(names(V(ta)))
 converted_genes[26, ] = c('Prkn', 'PRKN')
@@ -154,11 +144,6 @@ createNetworkFromIgraph(ta, "Figure7A")
 #############################################
 # Figure 7B GTEx
 #############################################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = "E:/Dropbox/PNU/시스템생물학연구실/DB/GTEx/tpm_tissue.Rdata") # tpm, ginfo, tissue.tpml
-load(file = sprintf("%s/Rdata/Figure7_GTEx_muscle_CTSL-BNIP3-high_vs_CTSL-BNIP3-low_rcm_DEG.Rdata", dir)) #deg
-load(file = sprintf("%s/Homo_sapines_ptnCodingGenes.Rdata", dir)) #ens, protein_coding_genes
 
 library(fgsea)
 library(dplyr)
@@ -207,19 +192,9 @@ ggplot(gsea.df, aes(x = reorder(pathway, NES), y = NES)) +
   coord_flip()
 
 
-# for source data
-write.xlsx(gsea.df, file = sprintf("%s/excel/Fig6B.xlsx", dir), rowNames=T)
-
-
-
 #############################################
 # Figure 7C GTEx
 #############################################
-dir = "E:/Dropbox/PNU/시스템생물학연구실/data/cachexia"
-
-load(file = sprintf("%s/Rdata/Figure7_GTEx_muscle_CTSL-BNIP3-high_vs_CTSL-BNIP3-low_rcm_DEG.Rdata", dir)) #deg
-load(file = sprintf("%s/Homo_sapines_ptnCodingGenes.Rdata", dir)) #ens, protein_coding_genes
-source("E:/Dropbox/PNU/시스템생물학연구실/data/gluconeogenesis/bulkRNA/Rscripts/11-2_GSEAplot.R")
 
 # gsea
 deg = deg[match(protein_coding_genes$hgnc_symbol, deg$Genes),]
@@ -248,6 +223,7 @@ labs = list(mt="Electron Transport Chain Oxphos System In Mitochondria", redgrou
 length(rk)
 xmax = 21000
 hcol=c("blue", "white", "red")
+
 
 
 
