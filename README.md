@@ -34,7 +34,7 @@ RSEM_transcript_tpm.txt.gz
 RSEM_transcript_expected_count.txt.gz  
 🔗 [GTEx](https://gtexportal.org/home/downloads/adult-gtex/bulk_tissue_expression)
 
-4. **For Figures 6D, 7C**
+4. **For Figures 6D, 7C**  
 gseaPlot is the code used to generate GSEA plots shown in Figures 6D and 7C.
 
 5. **For Figures 3K, 3L, 6C**  
